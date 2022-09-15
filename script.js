@@ -4,6 +4,7 @@ let cols = 26;
 let addressColContainer = document.querySelector(".address-column-container");
 let addressRowContainer = document.querySelector(".address-row-container");
 let cellsContainer = document.querySelector(".cells-container")
+let addressBar = document.querySelector(".address-bar")
 for (let i = 0; i < rows; i++) {
   let addressColCell = document.createElement("div");
   addressColCell.setAttribute("class", "address-column");
@@ -24,7 +25,17 @@ for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         let cell = document.createElement("div");
         cell.setAttribute("class","cell");
+        cell.setAttribute("contenteditable","true");
         rowContainer.appendChild(cell);
+        addListenerForAddressBarDisplay(cell, i, j);
     }
     cellsContainer.appendChild(rowContainer);
+}
+
+function addListenerForAddressBarDisplay(cell, i, j){
+    cell.addEventListener("click", (e) => {
+        let rowID = i+1;
+        let colID = String.fromCharCode(65+j);
+        addressBar.value = `${colID}${rowID}`; 
+    })
 }
