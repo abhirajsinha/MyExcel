@@ -5,6 +5,8 @@ let addressColContainer = document.querySelector(".address-column-container");
 let addressRowContainer = document.querySelector(".address-row-container");
 let cellsContainer = document.querySelector(".cells-container")
 let addressBar = document.querySelector(".address-bar")
+
+//Columns
 for (let i = 0; i < rows; i++) {
   let addressColCell = document.createElement("div");
   addressColCell.setAttribute("class", "address-column");
@@ -12,6 +14,7 @@ for (let i = 0; i < rows; i++) {
   addressColContainer.appendChild(addressColCell);
 }
 
+//Rows
 for (let i = 0; i < cols; i++) {
   let addressRow = document.createElement("div");
   addressRow.setAttribute("class", "address-row");
@@ -19,6 +22,7 @@ for (let i = 0; i < cols; i++) {
   addressRowContainer.appendChild(addressRow);
 }
 
+//Columns for every row
 for (let i = 0; i < rows; i++) {
     let rowContainer = document.createElement("div");
     rowContainer.setAttribute("class","rowContainer");
@@ -32,6 +36,7 @@ for (let i = 0; i < rows; i++) {
     cellsContainer.appendChild(rowContainer);
 }
 
+// Row Column value
 function addListenerForAddressBarDisplay(cell, i, j){
     cell.addEventListener("click", (e) => {
         let rowID = i+1;
@@ -39,3 +44,4 @@ function addListenerForAddressBarDisplay(cell, i, j){
         addressBar.value = `${colID}${rowID}`; 
     })
 }
+
