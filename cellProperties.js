@@ -89,6 +89,5 @@ function decodeRowIDandColID(address) {
   //A1
   let rid = Number(address.slice(1)) - 1; //-1 to get the index
   let cid = Number(address.charCodeAt(0)) - 65;
-//   console.log(rowId, colId);
   return [rid, cid];
 }
