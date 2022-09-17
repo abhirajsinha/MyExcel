@@ -32,9 +32,8 @@ let leftAlignment = alignment[0];
 let centerAlignment = alignment[1];
 let rightAlignment = alignment[2];
 
-
 let activeCell = "#d1d8e0";
-let inactiveCell = "#ecf0f1"; 
+let inactiveCell = "#ecf0f1";
 //Attach Property Listeners -> Application of 2way Binding
 bold.addEventListener("click", (e) => {
   //Access active cells
@@ -50,36 +49,64 @@ bold.addEventListener("click", (e) => {
 });
 
 italic.addEventListener("click", (e) => {
-    //Access active cells
-    //Adress
-    //Find row and columns values
-    let address = addressBar.value;
-    let [cell, cellProp] = getActiveCell(address);
-  
-    //Modification
-    cellProp.italic = !cellProp.italic; //action performed
-    cell.style.fontStyle = cellProp.italic ? "italic" : "normal";
-    italic.style.backgroundColor = cellProp.italic ? activeCell : inactiveCell;
-  });
+  //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
 
-  underline.addEventListener("click", (e) => {
-    //Access active cells
-    //Adress
-    //Find row and columns values
-    let address = addressBar.value;
-    let [cell, cellProp] = getActiveCell(address);
-  
-    //Modification
-    cellProp.underline = !cellProp.underline; //action performed
-    cell.style.textDecoration = cellProp.underline ? "underline" : "none";
-    underline.style.backgroundColor = cellProp.underline ? activeCell : inactiveCell;
-  });
+  //Modification
+  cellProp.italic = !cellProp.italic; //action performed
+  cell.style.fontStyle = cellProp.italic ? "italic" : "normal";
+  italic.style.backgroundColor = cellProp.italic ? activeCell : inactiveCell;
+});
+
+underline.addEventListener("click", (e) => {
+  //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
+
+  //Modification
+  cellProp.underline = !cellProp.underline; //action performed
+  cell.style.textDecoration = cellProp.underline ? "underline" : "none";
+  underline.style.backgroundColor = cellProp.underline
+    ? activeCell
+    : inactiveCell;
+});
+
+//font size
+fontSize.addEventListener("change", (e) => {
+  //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
+
+  cellProp.fontSize = fontSize.value;
+  cell.style.fontSize = cellProp.fontSize + "px";
+  fontSize.value = cellProp.fontSize;
+});
+
+//fontFamily
+fontFamily.addEventListener("change", (e) =>{
+      //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
+
+  cellProp.fontFamily = fontFamily.value;
+  cell.style.fontFamily = cellProp.fontFamily;
+  fontFamily.value = cellProp.fontFamily;
+})
 
 function getActiveCell(address) {
   let [rid, cid] = decodeRowIDandColID(address);
   //Adress cell & storage object
   let cell = document.querySelector(`.cell[rid="${rid}"][cid="${cid}"]`);
-    //console.log(cell);
+  //console.log(cell);
   let cellProp = sheetDB[rid][cid];
   return [cell, cellProp];
 }
