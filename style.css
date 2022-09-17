@@ -18,21 +18,24 @@ body {
   display: flex;
   align-items: flex-end;
   padding-left: 1rem;
-  background-color: #0E7C41;
+  background-color: #0e7c41;
 }
 
 .page-action {
   margin: 0.5rem;
-  color: #F3F2F1;
+  color: #f3f2f1;
 }
 
 /* CellProperty */
+.cellprops-action-container > *:hover {
+  cursor: pointer;
+}
 .cellprops-action-container {
   height: 3rem;
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  background-color: #F3F2F1;
+  background-color: #f3f2f1;
   padding-left: 1rem;
 }
 
@@ -55,16 +58,16 @@ body {
   padding: 0.2rem;
 }
 
-.color-prop{
-    position: relative;
+.color-prop {
+  position: relative;
 }
 
-.color-prop > input{
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
+.color-prop > input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
 }
 
 /* Formula Container */
@@ -73,7 +76,7 @@ body {
   display: flex;
   align-items: center;
   padding-left: 1rem;
-  background-color: #F3F2F1;
+  background-color: #f3f2f1;
 }
 
 .formula-action-container > * {
@@ -106,7 +109,7 @@ body {
 .grid-container {
   position: relative;
   height: calc(100vh - 3rem - 2rem - 3rem - 3rem);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   overflow: scroll;
   /* background-color: aqua; */
 }
@@ -130,27 +133,26 @@ body {
 }
 
 .address-row-container {
-    display: flex;
-    /* height: 2rem; */
-    position: sticky;
-    top: 0;
-    left: 2rem;
-    /* width: 2rem; */
-    /* background-color: #218c74; */
-  }
+  display: flex;
+  /* height: 2rem; */
+  position: sticky;
+  top: 0;
+  left: 2rem;
+  /* width: 2rem; */
+  /* background-color: #218c74; */
+}
 
 .address-column {
   height: 2rem;
   width: 2rem;
   text-align: center;
-  border: 1px solid #F3F2F1;
-  
+  border: 1px solid #f3f2f1;
 }
 
 .address-row {
   height: 2rem;
   width: 5rem;
-  border: 1px solid #F3F2F1;
+  border: 1px solid #f3f2f1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -164,17 +166,16 @@ body {
   height: 10rem; */
 }
 
-.rowContainer{
-    display: flex;
+.rowContainer {
+  display: flex;
 }
 
-.cell{
-    height: 2rem;
-    width: 5rem;
-    border: 1px solid #dfe4ea;
-    outline: none;
+.cell {
+  height: 2rem;
+  width: 5rem;
+  border: 1px solid #dfe4ea;
+  outline: none;
 }
-
 
 /* Sheet Container */
 .sheet-action-container {

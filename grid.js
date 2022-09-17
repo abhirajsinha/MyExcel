@@ -30,6 +30,12 @@ for (let i = 0; i < rows; i++) {
         let cell = document.createElement("div");
         cell.setAttribute("class","cell");
         cell.setAttribute("contenteditable","true");
+        cell.setAttribute("spellcheck",false);
+
+        // For cell and column identificatio
+        cell.setAttribute("rid",i);
+        cell.setAttribute("cid",j);
+
         rowContainer.appendChild(cell);
         addListenerForAddressBarDisplay(cell, i, j);
     }
@@ -45,3 +51,7 @@ function addListenerForAddressBarDisplay(cell, i, j){
     })
 }
 
+//By Default click on 0th row, 0th col -> 1st cell [whenever the application open]
+//here .cell will give us the access of first cell
+let firstCell = document.querySelector(".cell");
+firstCell.click();
