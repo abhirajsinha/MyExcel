@@ -27,10 +27,10 @@ let fontSize = document.querySelector(".font-size-grp");
 let fontFamily = document.querySelector(".font-family-grp");
 let fontColor = document.querySelector(".font-color-prop");
 let BGColor = document.querySelector(".BG-color-prop");
-let alignment = document.querySelectorAll(".alignment");
-let leftAlignment = alignment[0];
-let centerAlignment = alignment[1];
-let rightAlignment = alignment[2];
+let alignment = document.querySelectorAll(".alignmet");
+let leftAlign = alignment[0];
+let centerAlign = alignment[1];
+let rightAlign = alignment[2];
 
 let activeCell = "#d1d8e0";
 let inactiveCell = "#ecf0f1";
@@ -90,8 +90,8 @@ fontSize.addEventListener("change", (e) => {
 });
 
 //fontFamily
-fontFamily.addEventListener("change", (e) =>{
-      //Access active cells
+fontFamily.addEventListener("change", (e) => {
+  //Access active cells
   //Adress
   //Find row and columns values
   let address = addressBar.value;
@@ -100,6 +100,63 @@ fontFamily.addEventListener("change", (e) =>{
   cellProp.fontFamily = fontFamily.value;
   cell.style.fontFamily = cellProp.fontFamily;
   fontFamily.value = cellProp.fontFamily;
+});
+
+//fontColor
+fontColor.addEventListener("change", (e) => {
+  //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
+
+  cellProp.fontColor = fontColor.value;
+  cell.style.color = cellProp.fontColor;
+  fontColor.value = cellProp.fontColor;
+});
+
+//BGColor
+BGColor.addEventListener("change", (e) => {
+  //Access active cells
+  //Adress
+  //Find row and columns values
+  let address = addressBar.value;
+  let [cell, cellProp] = getActiveCell(address);
+
+  cellProp.BGColor = BGColor.value;
+  cell.style.backgroundColor = cellProp.BGColor;
+  BGColor.value = cellProp.BGColor;
+});
+
+//Alignment
+alignment.forEach((alignElem) => {
+  alignElem.addEventListener("click", (e) => {
+      let address = addressBar.value;
+      let [cell, cellProp] = getActiveCell(address);
+
+      let alignValue = e.target.classList[0];
+      cellProp.alignment = alignValue; // Data change
+      cell.style.textAlign = cellProp.alignment; // UI change (1)
+
+      switch(alignValue) { // UI change (2)
+          case "left":
+              leftAlign.style.backgroundColor = activeCell;
+              centerAlign.style.backgroundColor = inactiveCell;
+              rightAlign.style.backgroundColor = inactiveCell;
+              break;
+          case "center":
+              leftAlign.style.backgroundColor = inactiveCell;
+              centerAlign.style.backgroundColor = activeCell;
+              rightAlign.style.backgroundColor = inactiveCell;
+              break;
+          case "right":
+              leftAlign.style.backgroundColor = inactiveCell;
+              centerAlign.style.backgroundColor = inactiveCell;
+              rightAlign.style.backgroundColor = activeCell;
+              break;
+      }
+
+  })
 })
 
 function getActiveCell(address) {
