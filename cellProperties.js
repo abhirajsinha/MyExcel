@@ -12,6 +12,7 @@ for (let i = 0; i < rows; i++) {
       fontSize: 14,
       fontColor: "#000000",
       BGColor: "#000000", // Just for indication Purpose, default color
+      value:"",
     };
     sheetRow.push(cellProps);
   }

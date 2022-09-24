@@ -1,6 +1,6 @@
 let rows = 100;
 let cols = 26;
-
+ 
 let addressColContainer = document.querySelector(".address-column-container");
 let addressRowContainer = document.querySelector(".address-row-container");
 let cellsContainer = document.querySelector(".cells-container")
