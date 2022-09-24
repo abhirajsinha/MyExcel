@@ -131,33 +131,71 @@ BGColor.addEventListener("change", (e) => {
 //Alignment
 alignment.forEach((alignElem) => {
   alignElem.addEventListener("click", (e) => {
-      let address = addressBar.value;
-      let [cell, cellProp] = getActiveCell(address);
+    let address = addressBar.value;
+    let [cell, cellProp] = getActiveCell(address);
 
-      let alignValue = e.target.classList[0];
-      cellProp.alignment = alignValue; // Data change
-      cell.style.textAlign = cellProp.alignment; // UI change (1)
+    let alignValue = e.target.classList[0];
+    cellProp.alignment = alignValue; // Data change
+    cell.style.textAlign = cellProp.alignment; // UI change (1)
+    switchCaseForTextAlignment(alignValue);
+  });
+});
 
-      switch(alignValue) { // UI change (2)
-          case "left":
-              leftAlign.style.backgroundColor = activeCell;
-              centerAlign.style.backgroundColor = inactiveCell;
-              rightAlign.style.backgroundColor = inactiveCell;
-              break;
-          case "center":
-              leftAlign.style.backgroundColor = inactiveCell;
-              centerAlign.style.backgroundColor = activeCell;
-              rightAlign.style.backgroundColor = inactiveCell;
-              break;
-          case "right":
-              leftAlign.style.backgroundColor = inactiveCell;
-              centerAlign.style.backgroundColor = inactiveCell;
-              rightAlign.style.backgroundColor = activeCell;
-              break;
-      }
+function switchCaseForTextAlignment(alignValue) {
+  switch (
+    alignValue // UI change (2)
+  ) {
+    case "left":
+      leftAlign.style.backgroundColor = activeCell;
+      centerAlign.style.backgroundColor = inactiveCell;
+      rightAlign.style.backgroundColor = inactiveCell;
+      break;
+    case "center":
+      leftAlign.style.backgroundColor = inactiveCell;
+      centerAlign.style.backgroundColor = activeCell;
+      rightAlign.style.backgroundColor = inactiveCell;
+      break;
+    case "right":
+      leftAlign.style.backgroundColor = inactiveCell;
+      centerAlign.style.backgroundColor = inactiveCell;
+      rightAlign.style.backgroundColor = activeCell;
+      break;
+  }
+}
 
-  })
-})
+//Send Cells 1 by 1 to attach Properties
+let allCells = document.querySelectorAll(".cell");
+for (let i = 0; i < allCells.length; i++) {
+  addListeneToAttachCellProperties(allCells[i]);
+}
+
+function addListeneToAttachCellProperties(cell) {
+  cell.addEventListener("click", (e) => {
+    let address = addressBar.value;
+    let [rid, cid] = decodeRowIDandColID(address);
+    let cellProp = sheetDB[rid][cid];
+
+    //Get all the properties of this cell
+    cell.style.fontWeight = cellProp.bold ? "bold" : "normal";
+    cell.style.fontStyle = cellProp.italic ? "italic" : "normal";
+    cell.style.textDecoration = cellProp.underline ? "underline" : "none";
+    cell.style.fontSize = cellProp.fontSize + "px";
+    cell.style.fontFamily = cellProp.fontFamily;
+    cell.style.color = cellProp.fontColor;
+    cell.style.backgroundColor = cellProp.BGColor == "#000000" ? "transparent" : BGColor;
+    cell.style.textAlign = cellProp.alignment;
+
+    // Apply UI Properties to the cell
+    bold.style.backgroundColor = cellProp.bold ? activeCell : inactiveCell;
+    italic.style.backgroundColor = cellProp.italic ? activeCell : inactiveCell;
+    underline.style.backgroundColor = cellProp.underline ? activeCell : inactiveCell;
+    fontSize.value = cellProp.fontSize;
+    fontFamily.value = cellProp.fontFamily;
+    fontColor.value = cellProp.fontColor;
+    BGColor.value = cellProp.BGColor;
+    switchCaseForTextAlignment(cellProp.alignment);
+  });
+}
 
 function getActiveCell(address) {
   let [rid, cid] = decodeRowIDandColID(address);
