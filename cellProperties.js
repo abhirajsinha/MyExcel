@@ -13,7 +13,8 @@ for (let i = 0; i < rows; i++) {
       fontColor: "#000000",
       BGColor: "#000000", // Just for indication Purpose, default color
       value:"",
-      formula:""
+      formula:"",
+      children:[]
     };
     sheetRow.push(cellProps);
   }
