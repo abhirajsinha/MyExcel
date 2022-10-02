@@ -26,10 +26,11 @@ formulaBar.addEventListener("keydown", (e) => {
     }
 
     // Update UI and CellProp in DB
-    setCellUIAndCellProp(evaluatedValue, inputFormula);
+    setCellUIAndCellProp(evaluatedValue, inputFormula, adress);
 
     //Establish Parent child relationship
     addChildToParent(inputFormula);
+    updateChildrenCells(adress);
     console.log(sheetDB);
   }
 });
@@ -62,8 +63,24 @@ function removeChildFromParent(formula) {
       //Decode and get its value
       let [parentCell, parentCellProp] = getCellAndCellProp(encodedFormula[i]);
       let index = parentCellProp.children.indexOf(childAddress);
-      parentCellProp.children.splice(idx,1);
+      parentCellProp.children.splice(idx, 1);
     }
+  }
+}
+
+function updateChildrenCells(parentAddress) {
+  let [parentCell, parentCellProp] = getCellAndCellProp(parentAddress);
+  let childrens = parentCellProp.children;
+
+  for (let i = 0; i < childrens.length; i++) {
+    let childAddress = children[i];
+    let [childCell, childCellProp] = getCellAndCellProp(childAddress);
+    let childFormula = childCellProp.formula;
+
+    let evaluatedValue = evaluateFormula(childFormula);
+    setCellUIAndCellProp(evaluatedValue, childFormula, childAddress);
+    //call recursion to update all cells
+    updateChildrenCells(childAddress);
   }
 }
 
@@ -84,8 +101,8 @@ function evaluateFormula(formula) {
   return eval(decodedFormula);
 }
 
-function setCellUIAndCellProp(evaluatedValue, formula) {
-  let address = addressBar.value;
+function setCellUIAndCellProp(evaluatedValue, formula, address) {
+  // let address = addressBar.value;
   let [cell, cellProp] = getCellAndCellProp(address);
   //UI Update
   cell.innerText = evaluatedValue;
