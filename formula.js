@@ -6,8 +6,13 @@ for (let i = 0; i < rows; i++) {
       let [activeCell, cellProp] = getCellAndCellProp(address);
       let enteredData = activeCell.innerText;
 
+      if (enteredData === cellProp.value) return;
+
       cellProp.value = enteredData;
-      //   console.log(cellProp);
+      // If data modifies remove P-C relation and make formula empty and then update children with new modified values
+      removeChildFromParent(cellProp.formula);
+      cellProp.formula = "";
+      updateChildrenCells(address);
     });
   }
 }
@@ -16,7 +21,6 @@ let formulaBar = document.querySelector(".formula-bar");
 formulaBar.addEventListener("keydown", (e) => {
   let inputFormula = formulaBar.value;
   if (e.key === "Enter" && inputFormula) {
-    let evaluatedValue = evaluateFormula(inputFormula);
 
     //If change in formula then remove old Parent Child relation -> evaluate new Parent Child relation and then add new Parent Child relation
     let adress = addressBar.value;
@@ -25,13 +29,14 @@ formulaBar.addEventListener("keydown", (e) => {
       removeChildFromParent(cellProp.formula);
     }
 
+    let evaluatedValue = evaluateFormula(inputFormula);
     // Update UI and CellProp in DB
     setCellUIAndCellProp(evaluatedValue, inputFormula, adress);
 
     //Establish Parent child relationship
     addChildToParent(inputFormula);
     updateChildrenCells(adress);
-    console.log(sheetDB);
+    // console.log(sheetDB);
   }
 });
 
@@ -63,7 +68,7 @@ function removeChildFromParent(formula) {
       //Decode and get its value
       let [parentCell, parentCellProp] = getCellAndCellProp(encodedFormula[i]);
       let index = parentCellProp.children.indexOf(childAddress);
-      parentCellProp.children.splice(idx, 1);
+      parentCellProp.children.splice(index, 1);
     }
   }
 }
@@ -73,7 +78,7 @@ function updateChildrenCells(parentAddress) {
   let childrens = parentCellProp.children;
 
   for (let i = 0; i < childrens.length; i++) {
-    let childAddress = children[i];
+    let childAddress = childrens[i];
     let [childCell, childCellProp] = getCellAndCellProp(childAddress);
     let childFormula = childCellProp.formula;
 

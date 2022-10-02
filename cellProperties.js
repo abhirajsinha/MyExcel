@@ -1,4 +1,4 @@
-let sheetDB = []; 
+let sheetDB = [];
 
 for (let i = 0; i < rows; i++) {
   let sheetRow = [];
@@ -12,9 +12,9 @@ for (let i = 0; i < rows; i++) {
       fontSize: 14,
       fontColor: "#000000",
       BGColor: "#000000", // Just for indication Purpose, default color
-      value:"",
-      formula:"",
-      children:[]
+      value: "",
+      formula: "",
+      children: [],
     };
     sheetRow.push(cellProps);
   }
@@ -185,18 +185,24 @@ function addListeneToAttachCellProperties(cell) {
     cell.style.fontSize = cellProp.fontSize + "px";
     cell.style.fontFamily = cellProp.fontFamily;
     cell.style.color = cellProp.fontColor;
-    cell.style.backgroundColor = cellProp.BGColor == "#000000" ? "transparent" : BGColor;
+    cell.style.backgroundColor =
+      cellProp.BGColor == "#000000" ? "transparent" : BGColor;
     cell.style.textAlign = cellProp.alignment;
 
     // Apply UI Properties to the cell
     bold.style.backgroundColor = cellProp.bold ? activeCell : inactiveCell;
     italic.style.backgroundColor = cellProp.italic ? activeCell : inactiveCell;
-    underline.style.backgroundColor = cellProp.underline ? activeCell : inactiveCell;
+    underline.style.backgroundColor = cellProp.underline
+      ? activeCell
+      : inactiveCell;
     fontSize.value = cellProp.fontSize;
     fontFamily.value = cellProp.fontFamily;
     fontColor.value = cellProp.fontColor;
     BGColor.value = cellProp.BGColor;
     switchCaseForTextAlignment(cellProp.alignment);
+    let formulaBar = document.querySelector(".formula-bar");
+    formulaBar.value = cellProp.formula;
+    cell.value = cellProp.value;
   });
 }
 
