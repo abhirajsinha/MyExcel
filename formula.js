@@ -22,7 +22,6 @@ let formulaBar = document.querySelector(".formula-bar");
 formulaBar.addEventListener("keydown", (e) => {
   let inputFormula = formulaBar.value;
   if (e.key === "Enter" && inputFormula) {
-
     //If change in formula then remove old Parent Child relation -> evaluate new Parent Child relation and then add new Parent Child relation
     let adress = addressBar.value;
     let [cell, cellProp] = getCellAndCellProp(adress);
@@ -30,11 +29,18 @@ formulaBar.addEventListener("keydown", (e) => {
       removeChildFromParent(cellProp.formula);
     }
 
-    let evaluatedValue = evaluateFormula(inputFormula);
-
     //Make graph relation
     addChildToGraphComponent(inputFormula, adress);
-    
+    //check formula is cyclic or not?
+    let isCyclic = isGraphCyclic(graphComponentMatrix);
+    if (isCyclic) {
+      alert("Your formula is making a cycle");
+      removeChildFromGraphComponet(inputFormula, adress);
+      return;
+    }
+
+    let evaluatedValue = evaluateFormula(inputFormula);
+
     // Update UI and CellProp in DB
     setCellUIAndCellProp(evaluatedValue, inputFormula, adress);
 
@@ -78,12 +84,24 @@ function removeChildFromParent(formula) {
   }
 }
 
-function addChildToGraphComponent(formula, childAddress){
+function removeChildFromGraphComponet(formula, childAddress) {
   let [crid, ccid] = decodeRowIDandColID(childAddress);
   let encodedFormula = formula.split(" ");
-  for(let i=0;i<encodedFormula.length;i++){
+  for (let i = 0; i < encodedFormula.length; i++) {
     let ascciValue = encodedFormula[i].charCodeAt(0);
-    if(ascciValue>=65 && ascciValue<=90){
+    if (ascciValue >= 65 && ascciValue <= 90) {
+      let [prid, pcid] = decodeRowIDandColID(encodedFormula[i]);
+      graphComponentMatrix[prid][pcid].pop();
+    }
+  }
+}
+
+function addChildToGraphComponent(formula, childAddress) {
+  let [crid, ccid] = decodeRowIDandColID(childAddress);
+  let encodedFormula = formula.split(" ");
+  for (let i = 0; i < encodedFormula.length; i++) {
+    let ascciValue = encodedFormula[i].charCodeAt(0);
+    if (ascciValue >= 65 && ascciValue <= 90) {
       let [prid, pcid] = decodeRowIDandColID(encodedFormula[i]);
       graphComponentMatrix[prid][pcid].push([crid, ccid]);
     }
