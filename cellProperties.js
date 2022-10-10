@@ -200,6 +200,7 @@ function addListeneToAttachCellProperties(cell) {
     fontColor.value = cellProp.fontColor;
     BGColor.value = cellProp.BGColor;
     switchCaseForTextAlignment(cellProp.alignment);
+
     let formulaBar = document.querySelector(".formula-bar");
     formulaBar.value = cellProp.formula;
     cell.value = cellProp.value;

@@ -18,6 +18,7 @@ for (let i = 0; i < rows; i++) {
 }
 
 let formulaBar = document.querySelector(".formula-bar");
+
 formulaBar.addEventListener("keydown", (e) => {
   let inputFormula = formulaBar.value;
   if (e.key === "Enter" && inputFormula) {
@@ -30,6 +31,10 @@ formulaBar.addEventListener("keydown", (e) => {
     }
 
     let evaluatedValue = evaluateFormula(inputFormula);
+
+    //Make graph relation
+    addChildToGraphComponent(inputFormula, adress);
+    
     // Update UI and CellProp in DB
     setCellUIAndCellProp(evaluatedValue, inputFormula, adress);
 
@@ -69,6 +74,18 @@ function removeChildFromParent(formula) {
       let [parentCell, parentCellProp] = getCellAndCellProp(encodedFormula[i]);
       let index = parentCellProp.children.indexOf(childAddress);
       parentCellProp.children.splice(index, 1);
+    }
+  }
+}
+
+function addChildToGraphComponent(formula, childAddress){
+  let [crid, ccid] = decodeRowIDandColID(childAddress);
+  let encodedFormula = formula.split(" ");
+  for(let i=0;i<encodedFormula.length;i++){
+    let ascciValue = encodedFormula[i].charCodeAt(0);
+    if(ascciValue>=65 && ascciValue<=90){
+      let [prid, pcid] = decodeRowIDandColID(encodedFormula[i]);
+      graphComponentMatrix[prid][pcid].push([crid, ccid]);
     }
   }
 }
