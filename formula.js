@@ -19,7 +19,7 @@ for (let i = 0; i < rows; i++) {
 
 let formulaBar = document.querySelector(".formula-bar");
 
-formulaBar.addEventListener("keydown", (e) => {
+formulaBar.addEventListener("keydown", async(e) => {
   let inputFormula = formulaBar.value;
   if (e.key === "Enter" && inputFormula) {
     //If change in formula then remove old Parent Child relation -> evaluate new Parent Child relation and then add new Parent Child relation
@@ -32,10 +32,16 @@ formulaBar.addEventListener("keydown", (e) => {
     //Make graph relation
     addChildToGraphComponent(inputFormula, adress);
     //check formula is cyclic or not?
-    let isCyclic = isGraphCyclic(graphComponentMatrix);
-    if (isCyclic) {
-      alert("Your formula is making a cycle");
-      removeChildFromGraphComponet(inputFormula, adress);
+    let cycleResponse = isGraphCyclic(graphComponentMatrix);
+    if (cycleResponse) {
+      // alert("Your formula is making a cycle");
+      let response  = confirm("your formula is cyclic, Do you want to trace your file");
+      while(response){
+        //Keep on tracking color until user is satisfied
+        await isGraphCyclicTracePath(graphComponentMatrix, cycleResponse);
+        response = confirm("your formula is cyclic, Do you want to trace your file");
+      }
+      removeChildFromGraphComponet(inputFormula, adress);//Cyclic relation, so break this relation from the graph component
       return;
     }
 
@@ -100,11 +106,13 @@ function addChildToGraphComponent(formula, childAddress) {
   let [crid, ccid] = decodeRowIDandColID(childAddress);
   let encodedFormula = formula.split(" ");
   for (let i = 0; i < encodedFormula.length; i++) {
-    let ascciValue = encodedFormula[i].charCodeAt(0);
-    if (ascciValue >= 65 && ascciValue <= 90) {
-      let [prid, pcid] = decodeRowIDandColID(encodedFormula[i]);
-      graphComponentMatrix[prid][pcid].push([crid, ccid]);
-    }
+      let asciiValue = encodedFormula[i].charCodeAt(0);
+      if (asciiValue >= 65 && asciiValue <= 90) {
+          let [prid, pcid] = decodeRowIDandColID(encodedFormula[i]);
+          // B1: A1 + 10
+          // rid -> i, cid -> j
+          graphComponentMatrix[prid][pcid].push([crid, ccid]);
+      }
   }
 }
 
