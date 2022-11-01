@@ -197,8 +197,8 @@ body {
 }
 
 .sheet-add-icon:hover {
-  cursor: default;
-  color: lightblue;
+  cursor: pointer;
+  /* color: lightblue; */
 }
 
 .sheet-container{
