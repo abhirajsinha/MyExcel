@@ -11,7 +11,7 @@
     />
     <title>My Excel</title>
   </head>
-  
+
   <body>
     <div class="Excel-container">
       <div class="page-action-container">
@@ -43,29 +43,34 @@
         <span class="material-icons italic"> format_italic </span>
         <span class="material-icons underline"> format_underline </span>
         <span class="left material-icons alignmet"> format_align_left </span>
-        <span class="center material-icons alignmet"> format_align_center </span>
+        <span class="center material-icons alignmet">
+          format_align_center
+        </span>
         <span class="right material-icons alignmet"> format_align_right </span>
         <div class="color-prop">
-            <span class="material-icons"> format_color_text </span>
-            <input type="color" class="font-color-prop">
+          <span class="material-icons"> format_color_text </span>
+          <input type="color" class="font-color-prop" />
         </div>
         <div class="color-prop">
-            <span class="material-icons"> format_color_fill </span>
-            <input type="color" class="BG-color-prop">
+          <span class="material-icons"> format_color_fill </span>
+          <input type="color" class="BG-color-prop" />
         </div>
       </div>
 
       <div class="formula-action-container">
-        <input type="text" readonly class="address-bar">
-        <img class="formula-icon" src="https://img.icons8.com/ios/50/000000/formula-fx.png"/>
-        <input type="text" class="formula-bar">
+        <input type="text" readonly class="address-bar" />
+        <img
+          class="formula-icon"
+          src="https://img.icons8.com/ios/50/000000/formula-fx.png"
+        />
+        <input type="text" class="formula-bar" />
       </div>
 
       <div class="grid-container">
         <div class="top-left-dummyBox-container"></div>
-        <div  class="address-column-container"></div>
+        <div class="address-column-container"></div>
         <div class="cells-container">
-            <div class="address-row-container"></div>
+          <div class="address-row-container"></div>
         </div>
       </div>
 
@@ -75,7 +80,7 @@
         </div>
 
         <div class="sheets-folder-container">
-            <!-- <div id="0" class="sheet-folder">
+          <!-- <div id="0" class="sheet-folder">
               <div class="sheet-container">Sheet 1</div>
             </div> -->
         </div>
@@ -85,8 +90,9 @@
     <script src="./grid.js"></script>
     <script src="./cyclicPathTrace.js"></script>
     <script src="./cycleValidation.js"></script>
-    <script src="./sheetHandling.js"></script>
+    <!-- <script src="./sheetHandling.js"></script> -->
     <script src="./cellProperties.js"></script>
     <script src="./formula.js"></script>
+    <!-- <script src="./cutCopyPaste.js"></script> -->
   </body>
 </html>

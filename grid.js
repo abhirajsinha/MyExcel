@@ -51,7 +51,7 @@ function addListenerForAddressBarDisplay(cell, i, j){
     })
 }
 
-// //By Default click on 0th row, 0th col -> 1st cell [whenever the application open]
-// //here .cell will give us the access of first cell
-// let firstCell = document.querySelector(".cell");
-// firstCell.click();
+//By Default click on 0th row, 0th col -> 1st cell [whenever the application open]
+//here .cell will give us the access of first cell
+let firstCell = document.querySelector(".cell");
+firstCell.click();
