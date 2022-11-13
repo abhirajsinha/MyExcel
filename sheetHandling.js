@@ -1,146 +1,139 @@
+let activeSheetColor  ="#ced6e0";
+let sheetsFolderCont = document.querySelector(".sheets-folder-container");
 let addSheetBtn = document.querySelector(".sheet-add-icon");
-let sheetFolderCont = document.querySelector(".sheets-folder-container");
-let activeSheetColor = "#ced6e0";
 
 addSheetBtn.addEventListener("click", (e) => {
-  let sheet = document.createElement("div");
-  sheet.setAttribute("class", "sheet-folder");
-
-  let allSheetFolders = document.querySelectorAll(".sheet-folder");
-  sheet.setAttribute("id", allSheetFolders.length);
-  sheet.innerHTML =
-   ` <div class="sheet-content">Sheet ${
-    allSheetFolders.length + 1
-  }</div>
-    `;
-
-  sheetFolderCont.appendChild(sheet);
-  sheet.scrollIntoView();
-  //Storage for sheets
-  createSheetDB();
-  createGraphComponentMatrix();
-  handleSheetActiveness(sheet);
-  handleSheetRemoval(sheet);
-  // handleSheetUI(sheet);
-  sheet.click();
-});
-
-function handleSheetRemoval(sheet) {
-  sheet.addEventListener("mousedown", (e) => {
-    // 0 - leftClick, 1 - scrollBar, 2 - rightClick
-    if (e.button !== 2) {
-      return;
-    }
+    let sheet = document.createElement("div");
+    sheet.setAttribute("class", "sheet-folder");
 
     let allSheetFolders = document.querySelectorAll(".sheet-folder");
-    if (allSheetFolders.length === 1) {
-      alert("You need to have atleast 1 sheet");
-      return;
+    sheet.setAttribute("id", allSheetFolders.length);
+
+    sheet.innerHTML = `
+        <div class="sheet-content">Sheet ${allSheetFolders.length + 1}</div>
+    `;
+
+    sheetsFolderCont.appendChild(sheet);
+    sheet.scrollIntoView();
+
+    // DB
+    createSheetDB();
+    createGraphComponentMatrix();
+    handleSheetActiveness(sheet);
+    handleSheetRemoval(sheet);
+    sheet.click();
+})
+
+function handleSheetRemoval(sheet) {
+    sheet.addEventListener("mousedown", (e) => {
+        // Right click
+        if (e.button !== 2) return;
+
+        let allSheetFolders = document.querySelectorAll(".sheet-folder");
+        if (allSheetFolders.length === 1) {
+            alert("You need to have atleast one sheet!!");
+            return;
+        }
+
+        let response = confirm("Your sheet will be removed permanently, Are you sure?");
+        if (response === false) return;
+
+        let sheetIdx = Number(sheet.getAttribute("id"));
+        // DB
+        collectedSheetDB.splice(sheetIdx, 1);
+        collectedGraphComponent.splice(sheetIdx, 1);
+        // UI
+        handleSheetUIRemoval(sheet)
+
+        // By default DB to sheet 1 (active)
+        sheetDB = collectedSheetDB[0];
+        graphComponentMatrix = collectedGraphComponent[0];
+        handleSheetProperties();
+    })
+}
+
+function handleSheetUIRemoval(sheet) {
+    sheet.remove();
+    let allSheetFolders = document.querySelectorAll(".sheet-folder");
+    for (let i = 0;i < allSheetFolders.length;i++) {
+        allSheetFolders[i].setAttribute("id", i);
+        let sheetContent = allSheetFolders[i].querySelector(".sheet-content");
+        sheetContent.innerText = `Sheet ${i+1}`;
+        allSheetFolders[i].style.backgroundColor = "transparent";
     }
 
-    let response = confirm(
-      "Your sheet will be removed permanently, Are you sure?"
-    );
-    if (!response) return;
-
-    let sheetIndex = Number(sheet.getAttribute("id"));
-    //DB
-    collectedSheetDB.splice(sheetIndex, 1);
-    collectedGraphComponent.splice(sheetIndex, 1);
-    //UI
-    handleSheetUIRemoval(sheet);
-
-    //Afte removing bring sheet1 to active sheet
-    sheetDB = collectedGraphComponent[0];
-    graphComponentMatrix = collectedGraphComponent[0];
-    handleSheetProperties();
-  });
+    allSheetFolders[0].style.backgroundColor = activeSheetColor;
 }
 
-function handleSheetUIRemoval(sheet){
-  sheet.remove();
-  let allSheetFolders = document.querySelectorAll(".sheet-folder");
-  for(let i=0;i<allSheetFolders.length;i++){
-    allSheetFolders[i].setAttribute("id",i);
-    let sheetContent = allSheetFolders[i].querySelector(".sheet-content");
-    sheetContent.innerText = `Sheet ${i+1}`;
-    allSheetFolders[i].style.backgroundColor = "transparent";
-  }
-  allSheetFolders[0].style.backgroundColor =  activeSheetColor; 
-}
-
-function handleSheetDB(sheetIndex) {
-  sheetDB = collectedGraphComponent[sheetIndex];
-  graphComponentMatrix = collectedGraphComponent[sheetIndex];
+function handleSheetDB(sheetIdx) {
+    sheetDB = collectedSheetDB[sheetIdx];
+    graphComponentMatrix = collectedGraphComponent[sheetIdx];
 }
 
 function handleSheetProperties() {
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      let cell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
-      cell.click();
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let cell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
+            cell.click();
+        }
     }
-  }
-  //By Default click on 0th row, 0th col -> 1st cell [whenever the application open]
-  //here .cell will give us the access of first cell
-  let firstCell = document.querySelector(".cell");
-  firstCell.click();
+    // By default click on first cell via DOM
+    let firstCell = document.querySelector(".cell");
+    firstCell.click();
 }
 
 function handleSheetUI(sheet) {
-  let allSheetFolders = document.querySelectorAll(".sheet-folder");
-
-  for (let i = 0; i < allSheetFolders.length; i++) {
-    allSheetFolders[i].style.backgroundColor = "transparent";
-  }
-  sheet.style.backgroundColor = activeSheetColor;
+    let allSheetFolders = document.querySelectorAll(".sheet-folder");
+    for (let i = 0; i < allSheetFolders.length; i++) {
+        allSheetFolders[i].style.backgroundColor = "transparent";
+    }
+    sheet.style.backgroundColor = activeSheetColor;
 }
 
 function handleSheetActiveness(sheet) {
-  sheet.addEventListener("click", (e) => {
-    let sheetIndex = Number(sheet.getAttribute("id"));
-    handleSheetDB(sheetIndex);
-    handleSheetProperties();
-    handleSheetUI(sheet);
-  });
+    sheet.addEventListener("click", (e) => {
+        let sheetIdx = Number(sheet.getAttribute("id"));
+        handleSheetDB(sheetIdx);
+        handleSheetProperties();
+        handleSheetUI(sheet);
+        console.log(sheetDB);
+    })
 }
 
 function createSheetDB() {
-  let sheetDB = [];
-
-  for (let i = 0; i < rows; i++) {
-    let sheetRow = [];
-    for (let j = 0; j < cols; j++) {
-      let cellProps = {
-        bold: false,
-        italic: false,
-        underline: false,
-        alignment: "left",
-        fontFamily: "monospace",
-        fontSize: 14,
-        fontColor: "#000000",
-        BGColor: "#000000", // Just for indication Purpose, default color
-        value: "",
-        formula: "",
-        children: [],
-      };
-      sheetRow.push(cellProps);
+    let sheetDB = [];
+    for (let i = 0; i < rows; i++) {
+        let sheetRow = [];
+        for (let j = 0; j < cols; j++) {
+            let cellProp = {
+                bold: false,
+                italic: false,
+                underline: false,
+                alignment: "left",
+                fontFamily: "monospace",
+                fontSize: "14",
+                fontColor: "#000000",
+                BGcolor: "#000000",  // Just for indication purpose,
+                value: "",
+                formula: "",
+                children: [],
+            }
+            sheetRow.push(cellProp);
+        }
+        sheetDB.push(sheetRow);
     }
-    sheetDB.push(sheetRow);
-  }
-  collectedSheetDB.push(sheetDB);
+    collectedSheetDB.push(sheetDB);
 }
 
 function createGraphComponentMatrix() {
-  for (let i = 0; i < rows; i++) {
-    let row = [];
-    for (let j = 0; j < cols; j++) {
-      // Why array -> More than 1 child relation(dependency)
-      row.push([]);
+    let graphComponentMatrix = [];
+    for (let i = 0; i < rows; i++) {
+        let row = [];
+        for (let j = 0; j < cols; j++) {
+            // Why array -> More than 1 child relation(dependency)
+            row.push([]);
+        }
+        graphComponentMatrix.push(row);
     }
-    graphComponentMatrix.push(row);
-  }
-
-  collectedGraphComponent.push(graphComponentMatrix);
+    collectedGraphComponent.push(graphComponentMatrix);
 }
-

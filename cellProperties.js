@@ -3,28 +3,29 @@ let sheetDB = [];
 {
   let addSheetBtn = document.querySelector(".sheet-add-icon");
   addSheetBtn.click();
+  handleSheetProperties();
 }
-for (let i = 0; i < rows; i++) {
-  let sheetRow = [];
-  for (let j = 0; j < cols; j++) {
-    let cellProps = {
-      bold: false,
-      italic: false,
-      underline: false,
-      alignment: "left",
-      fontFamily: "monospace",
-      fontSize: 14,
-      fontColor: "#000000",
-      BGColor: "#000000", // Just for indication Purpose, default color
-      value: "",
-      formula: "",
-      children: [],
-    };
-    sheetRow.push(cellProps);
-  }
+// for (let i = 0; i < rows; i++) {
+//   let sheetRow = [];
+//   for (let j = 0; j < cols; j++) {
+//     let cellProps = {
+//       bold: false,
+//       italic: false,
+//       underline: false,
+//       alignment: "left",
+//       fontFamily: "monospace",
+//       fontSize: 14,
+//       fontColor: "#000000",
+//       BGColor: "#000000", // Just for indication Purpose, default color
+//       value: "",
+//       formula: "",
+//       children: [],
+//     };
+//     sheetRow.push(cellProps);
+//   }
 
-  sheetDB.push(sheetRow);
-}
+//   sheetDB.push(sheetRow);
+// }
 
 //selctors for cell properties
 let bold = document.querySelector(".bold");
